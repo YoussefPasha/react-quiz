@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
-import { fetchQuizQuestions } from './API';
-import QuestionCard from './components/QuestiionCard'
-import {Difficulty} from './API'
+import React, { useState } from "react";
+import { fetchQuizQuestions } from "./API";
+import QuestionCard from "./components/QuestiionCard";
+import { questionState, Difficulty } from "./API";
+import { type } from "os";
 const TOTAL_QUESTIONS = 12;
 
-const App = () => {
+type AnswerObject = {
+  question: string;
+  answer: string;
+  correct: boolean;
+  correctAnswer: string;
+};
 
+const App = () => {
   const [loading, setLoading] = useState(false);
-  const [questions , setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<questionState[]>([]);
   const [number, setNumber] = useState(0);
-  const [userAnswers, setUsersAnswers] = useState([]);
+  const [userAnswers, setUsersAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
-
-  console.log(fetchQuizQuestions(TOTAL_QUESTIONS , Difficulty.EASY))
-
-
   const startTrivia = async () => {
-    
-  }
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
-
-  }
-  const nextQuestion = () => {
-
-  }
+    setLoading(true);
+    setGameOver(false);
+    const newQuestions = await fetchQuizQuestions(
+      TOTAL_QUESTIONS,
+      Difficulty.EASY
+    );
+    setQuestions(newQuestions);
+    setScore(0);
+    setUsersAnswers([]);
+    setNumber(0);
+    setLoading(false);
+  };
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const nextQuestion = () => {};
   return (
-    <div className='App'>
+    <div className="App">
       <h1>React Quiz</h1>
       <button className="start" onClick={startTrivia}>
         Start
@@ -42,9 +51,11 @@ const App = () => {
         callback = {checkAnswer}
       /> */}
 
-      <button className="next" onClick={nextQuestion}>Next Question</button>
+      <button className="next" onClick={nextQuestion}>
+        Next Question
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
