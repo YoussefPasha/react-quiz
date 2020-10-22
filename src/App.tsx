@@ -4,7 +4,7 @@ import QuestionCard from "./components/QuestiionCard";
 import { QuestionsState, Difficulty } from "./API";
 const TOTAL_QUESTIONS = 12;
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
