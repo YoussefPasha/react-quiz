@@ -9,21 +9,20 @@ export type Question = {
   type: string;
 };
 
-export type questionState = Question & { answers: string[] };
-
 export enum Difficulty {
   EASY = "easy",
-  MEDIUN = "medium",
+  MEDIUM = "medium",
   HARD = "hard",
 }
+
+export type QuestionsState = Question & { answers: string[] };
 
 export const fetchQuizQuestions = async (
   amount: number,
   difficulty: Difficulty
-) => {
-  const endPoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`;
-  const data = await (await fetch(endPoint)).json();
-  console.log(data);
+): Promise<QuestionsState[]> => {
+  const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`;
+  const data = await (await fetch(endpoint)).json();
   return data.results.map((question: Question) => ({
     ...question,
     answers: shuffleArray([
